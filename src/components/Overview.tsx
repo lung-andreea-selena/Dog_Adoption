@@ -20,11 +20,12 @@ const Overview = () => {
     const {dogs, setDogs, deleteDog, handleOpen} = useDogStore(); //we extract specific values from the object returned by the custom hook
     const [sortAscOrder, setSortAscOrder] = useState(false); // Initial sort order
     useEffect(() => {
+        // creates a sorted copy of the dogs array, leaving the original dogs array unaffected.
         const sorted = [...dogs].sort((a, b) => {
             if (sortAscOrder) {
-                return a.name.localeCompare(b.name);
+                return a.getName().localeCompare(b.getName());
             } else {
-                return b.name.localeCompare(a.name);
+                return b.getName().localeCompare(a.getName());
             }
         });
         console.log(sorted);
@@ -56,15 +57,15 @@ const Overview = () => {
                 (
                     dog, //iterating through dogs array and setting each grid key to its id
                 ) => (
-                    <Grid key={dog.id} item xs={12} md={3}>
+                    <Grid key={dog.getId()} item xs={12} md={3}>
                         <Card sx={{maxWidth: 345}}>
                             <CardActionArea
-                                onClick={() => navigate(`/dogs/${dog.id}`)}
+                                onClick={() => navigate(`/dogs/${dog.getId()}`)}
                             >
                                 <CardMedia
                                     sx={{height: 140}}
-                                    image={dog.imageUrl}
-                                    title={dog.name}
+                                    image={dog.getImage()}
+                                    title={dog.getName()}
                                 />
                                 <CardContent>
                                     <Typography
@@ -72,20 +73,20 @@ const Overview = () => {
                                         variant='h5'
                                         component='div'
                                     >
-                                        {`${dog.name}-${dog.breed}`}
+                                        {`${dog.getName()}-${dog.getBreed()}`}
                                     </Typography>
                                     <Typography
                                         variant='body2'
                                         color='text.secondary'
                                     >
-                                        {dog.description}
+                                        {dog.getDescription()}
                                     </Typography>
                                 </CardContent>
                             </CardActionArea>
                             <CardActions>
                                 <Button
                                     size='small'
-                                    onClick={() => deleteDog(dog.id)}
+                                    onClick={() => deleteDog(dog.getId())}
                                 >
                                     Delete
                                 </Button>

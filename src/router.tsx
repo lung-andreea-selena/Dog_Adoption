@@ -9,7 +9,10 @@ const AppRouter = () => {
         <BrowserRouter>
             <Suspense fallback={<></>}>
                 <Routes>
+                    {/* Default route  */}
                     <Route path='/' element={<Navigate replace to='/dogs' />} />
+
+                    {/* Routes for different paths */}
                     <Route
                         element={
                             <Layout>

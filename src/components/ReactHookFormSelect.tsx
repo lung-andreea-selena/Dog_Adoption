@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {FormControl, InputLabel, Select} from '@mui/material';
 import {Controller} from 'react-hook-form';
 

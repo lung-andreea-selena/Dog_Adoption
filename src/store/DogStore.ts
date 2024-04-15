@@ -1,6 +1,5 @@
 import {create} from 'zustand';
-import Dog from '../model/Dog';
-import {DogList} from '../service/DogApi';
+import {Dog} from '../model/Dog';
 
 //the interface defines the shape of the state managed by useDogStore hook and it includes properties
 interface useDogStoreProps {
@@ -25,7 +24,7 @@ const useDogStore = create<useDogStoreProps>((set) => ({
     //function that updates the state by mapping over the dogs array and replacing the dog by mathing the ids
     editDog: (dog: Dog) => {
         set((state) => ({
-            dogs: state.dogs.map((d) => (d.id === dog.id ? dog : d)), //iterate over each dog in dogs array and check if id matches it changes, if not it will not
+            dogs: state.dogs.map((d) => (d.getId === dog.getId ? dog : d)), //iterate over each dog in dogs array and check if id matches it changes, if not it will not
         }));
     },
     handleClose: () => set({opened: false, selectedDog: {} as Dog}),

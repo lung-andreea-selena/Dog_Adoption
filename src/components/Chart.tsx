@@ -1,56 +1,133 @@
-import Chart from 'chart.js/auto';
-import React, {useEffect, useRef} from 'react';
-import {DogList} from '../service/DogApi';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import {Box} from '@mui/material';
+import {PieChart} from '@mui/x-charts/PieChart';
+import axios from 'axios';
+import {useEffect, useState} from 'react';
+import {Dog, DogBreed} from '../model/Dog';
 
-const DogChart: React.FC = () => {
-    const chartRef = useRef<HTMLCanvasElement>(null);
-
+function CalculateTotal(breed: DogBreed) {
+    const [dogs, setDogs] = useState<Dog[]>([]);
+    const fetchDogs = () => {
+        axios
+            .get('http://localhost:3001/api/dogs')
+            .then((response) => {
+                const dogs = response.data.map(
+                    (dog: any) =>
+                        new Dog(
+                            dog.id,
+                            dog.name,
+                            dog.breed,
+                            dog.description,
+                            dog.imagineUrl,
+                            dog.age,
+                            dog.owner,
+                        ),
+                );
+                setDogs(dogs);
+            })
+            .catch((error) => {
+                console.error('Error fetching dogs:', error);
+            });
+    };
     useEffect(() => {
-        if (chartRef.current) {
-            // Count occurrences of each dog breed
-            const breedCounts = DogList.reduce((counts, dog) => {
-                counts[dog.breed] = (counts[dog.breed] || 0) + 1;
-                return counts;
-            }, {});
+        fetchDogs();
+    }, []);
+    const total = dogs.reduce((acc, curr) => {
+        if (curr.getBreed() === breed) {
+            return acc + 1;
+        }
+        return acc;
+    }, 0);
+    return total;
+}
 
-            // Prepare data for the chart
-            const breedLabels = Object.keys(breedCounts);
-            const breedData = breedLabels.map((breed) => breedCounts[breed]);
-
-            // Create a bar chart
-            const ctx = chartRef.current.getContext('2d');
-            if (ctx) {
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: breedLabels,
-                        datasets: [
+const DogPieChart = () => {
+    return (
+        <Box flexGrow={1}>
+            <PieChart
+                colors={[
+                    'red',
+                    'blue',
+                    'purple',
+                    'orange',
+                    'green',
+                    'yellow',
+                    'brown',
+                    'pink',
+                    'gray',
+                    'lime',
+                    'navy',
+                ]}
+                series={[
+                    {
+                        data: [
                             {
-                                label: 'Dog Breeds',
-                                data: breedData,
-                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                                borderColor: 'rgba(54, 162, 235, 1)',
-                                borderWidth: 1,
+                                id: 0,
+                                value: CalculateTotal(DogBreed.BEAGLE) ?? 0,
+                                label: 'BEAGLE',
+                            },
+                            {
+                                id: 1,
+                                value: CalculateTotal(DogBreed.BERNESE) ?? 0,
+                                label: 'BERNESE',
+                            },
+                            {
+                                id: 2,
+                                value: CalculateTotal(DogBreed.BICHON) ?? 0,
+                                label: 'BICHON',
+                            },
+                            {
+                                id: 3,
+                                value: CalculateTotal(DogBreed.CHIHUAHUA) ?? 0,
+                                label: 'CHIHUAHUA',
+                            },
+                            {
+                                id: 4,
+                                value: CalculateTotal(DogBreed.CHOWCHOW) ?? 0,
+                                label: 'CHOWCHOW',
+                            },
+                            {
+                                id: 5,
+                                value: CalculateTotal(DogBreed.DALMATIAN) ?? 0,
+                                label: 'DALMATIAN',
+                            },
+                            {
+                                id: 6,
+                                value:
+                                    CalculateTotal(DogBreed.GERMAN_SHEPHERD) ??
+                                    0,
+                                label: 'GERMAN SHEPHERD',
+                            },
+                            {
+                                id: 7,
+                                value:
+                                    CalculateTotal(DogBreed.GOLDEN_RETRIEVER) ??
+                                    0,
+                                label: 'GOLDEN RETRIEVER',
+                            },
+                            {
+                                id: 8,
+                                value: CalculateTotal(DogBreed.HUSKY) ?? 0,
+                                label: 'HUSKY',
+                            },
+                            {
+                                id: 9,
+                                value: CalculateTotal(DogBreed.LABRADOR) ?? 0,
+                                label: 'LABRADOR',
+                            },
+                            {
+                                id: 10,
+                                value: CalculateTotal(DogBreed.PITBULL) ?? 0,
+                                label: 'PITBUL',
                             },
                         ],
                     },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                            },
-                        },
-                    },
-                });
-            }
-        }
-    }, []);
-
-    return (
-        <div style={{width: '400px', margin: '20px auto'}}>
-            <canvas ref={chartRef}></canvas>
-        </div>
+                ]}
+                width={400}
+                height={400}
+            />
+        </Box>
     );
 };
 
-export default DogChart;
+export default DogPieChart;
