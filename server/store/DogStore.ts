@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {faker} from '@faker-js/faker';
-import {Dog, DogBreed} from './model/Dog';
+import {Dog, DogBreed} from '../model/Dog';
+import {possessions} from './PossessionStore';
 
 const generateRandomDog = () => {
     const id = faker.number.int(1000);
@@ -11,7 +12,16 @@ const generateRandomDog = () => {
     const owner = faker.person.lastName();
     const breed = faker.helpers.arrayElement(Object.values(DogBreed));
 
-    return new Dog(id, name, breed, description, imageUrl, age, owner);
+    return {
+        id: id,
+        name: name,
+        breed: breed as DogBreed,
+        description: description,
+        imageUrl: imageUrl,
+        age: age,
+        owner: owner,
+        possessions: possessions,
+    };
 };
 
 export const dogs: Dog[] = Array.from({length: 11}, generateRandomDog);

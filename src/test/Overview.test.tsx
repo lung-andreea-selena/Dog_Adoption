@@ -1,6 +1,6 @@
 import {render} from '@testing-library/react';
 import {vi} from 'vitest';
-import Overview from '../components/Overview';
+import Overview from '../components/Dog/OverviewDog';
 vi.mock('react-router-dom', () => ({
     ...require('react-router-dom'),
     useNavigate: () => vi.fn(),

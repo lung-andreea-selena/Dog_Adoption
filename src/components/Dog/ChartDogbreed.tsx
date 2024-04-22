@@ -3,7 +3,7 @@ import {Box} from '@mui/material';
 import {PieChart} from '@mui/x-charts/PieChart';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-import {Dog, DogBreed} from '../model/Dog';
+import {Dog, DogBreed} from '../../model/Dog';
 
 function CalculateTotal(breed: DogBreed) {
     const [dogs, setDogs] = useState<Dog[]>([]);
@@ -11,18 +11,15 @@ function CalculateTotal(breed: DogBreed) {
         axios
             .get('http://localhost:3001/api/dogs')
             .then((response) => {
-                const dogs = response.data.map(
-                    (dog: any) =>
-                        new Dog(
-                            dog.id,
-                            dog.name,
-                            dog.breed,
-                            dog.description,
-                            dog.imagineUrl,
-                            dog.age,
-                            dog.owner,
-                        ),
-                );
+                const dogs = response.data.map((dog: any) => ({
+                    id: dog.id,
+                    name: dog.name,
+                    breed: dog.breed,
+                    description: dog.description,
+                    imageUrl: dog.imageUrl,
+                    age: dog.age,
+                    owner: dog.owner,
+                }));
                 setDogs(dogs);
             })
             .catch((error) => {
@@ -33,7 +30,7 @@ function CalculateTotal(breed: DogBreed) {
         fetchDogs();
     }, []);
     const total = dogs.reduce((acc, curr) => {
-        if (curr.getBreed() === breed) {
+        if (curr.breed === breed) {
             return acc + 1;
         }
         return acc;

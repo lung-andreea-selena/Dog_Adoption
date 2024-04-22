@@ -2,7 +2,7 @@
 import {Request, Response} from 'express';
 import request from 'supertest';
 import app from '../App';
-import {dogs} from '../DogStore';
+import {dogs} from '../store/DogStore';
 import * as DogController from '../controller/DogController';
 import {Dog} from '../model/Dog';
 

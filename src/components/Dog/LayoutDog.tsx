@@ -1,4 +1,4 @@
-import DogDialog from './DogDialog';
+import DogDialog from './DialogDog';
 
 //children: the content that will be rendered within the layout (in router we have <Layout><Overview/></Layout>)
 interface LayoutProps {
