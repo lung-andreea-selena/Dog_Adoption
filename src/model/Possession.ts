@@ -1,5 +1,6 @@
 export interface Possession {
-    id: number;
+    Pid: number;
+    dogId: number;
     title: string;
     type: PossessionType;
     description: string;

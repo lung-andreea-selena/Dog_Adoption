@@ -43,7 +43,7 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
     editPossession: async (possession: Possession) => {
         try {
             await axios.put(
-                `http://localhost:3001/possessions/${possession.id}`,
+                `http://localhost:3001/possessions/${possession.Pid}`,
                 possession,
             );
             fetchPossessions();
@@ -52,7 +52,7 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
         }
         set((state) => ({
             possessions: state.possessions.map((p) =>
-                p.id === possession.id ? possession : p,
+                p.Pid === possession.Pid ? possession : p,
             ),
         }));
         fetchPossessions();
@@ -71,7 +71,7 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
     deletePossesion: async (possession: Possession) => {
         try {
             await axios.delete(
-                `http://localhost:3001/possessions/${possession.id}`,
+                `http://localhost:3001/possessions/${possession.Pid}`,
             );
             fetchPossessions();
         } catch (error) {
@@ -79,7 +79,7 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
         }
         set((state) => ({
             possessions: state.possessions.filter(
-                (p) => p.id !== possession.id,
+                (p) => p.Pid !== possession.Pid,
             ),
         }));
     },

@@ -10,7 +10,7 @@ const Detail = () => {
     const {dogs} = useDogStore();
     useEffect(() => {
         if (params.id)
-            setDog(dogs.find((dog) => dog.id === parseInt(params.id!)));
+            setDog(dogs.find((dog) => dog.Did === parseInt(params.id!)));
     }, [params.id]);
     return (
         <>

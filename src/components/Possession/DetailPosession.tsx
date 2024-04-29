@@ -14,7 +14,7 @@ const Detail = () => {
         if (params.id)
             setpossession(
                 possessions.find(
-                    (possession) => possession.id === parseInt(params.id!),
+                    (possession) => possession.Pid === parseInt(params.id!),
                 ),
             );
     }, [params.id]);
@@ -32,7 +32,7 @@ const Detail = () => {
                     <Grid container spacing={2}>
                         <Grid item xs={2}>
                             <Typography variant='body1'>
-                                <b>Owner:</b>
+                                <b>Instructions:</b>
                             </Typography>
                         </Grid>
                         <Grid item xs={10}>
@@ -40,6 +40,17 @@ const Detail = () => {
                                 disabled={true}
                                 value={possession?.instructions || ''}
                             />
+                        </Grid>
+                        <Grid item xs={2}>
+                            <Typography variant='body1'>
+                                <b>Dog Id:</b>
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={10}>
+                            <TextField
+                                disabled={true}
+                                value={possession?.dogId || ''}
+                            ></TextField>
                         </Grid>
                     </Grid>
                 </Grid>

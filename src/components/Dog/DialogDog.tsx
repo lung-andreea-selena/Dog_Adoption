@@ -28,28 +28,26 @@ const DogDialog = () => {
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         if (selectedDog) {
             const updatedDog = {
-                id: selectedDog.id,
+                Did: selectedDog.Did,
                 name: data.name,
                 breed: data.breed as DogBreed,
                 description: data.description,
                 imageUrl: data.imageUrl,
                 age: data.age,
                 owner: data.owner,
-                possessions: selectedDog.possessions,
             };
             reset();
             handleClose();
             editDog(updatedDog);
         } else {
             addDog({
-                id: Math.floor(Math.random() * 1000),
+                Did: Math.floor(Math.random() * 1000),
                 name: data.name,
                 breed: data.breed as DogBreed,
                 description: data.description,
                 imageUrl: data.imageUrl,
                 age: data.age,
                 owner: data.owner,
-                possessions: [],
             });
             reset();
             handleClose();

@@ -12,7 +12,6 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Dog} from '../../model/Dog';
@@ -20,40 +19,39 @@ import {useDogStore} from '../../store/DogStore';
 
 //declare functional component
 const Overview = () => {
-    const {dogs, setDogs, deleteDog, handlePossessions, handleOpen} =
-        useDogStore(); //we extract specific values from the object returned by the custom hook
+    const {dogs, setDogs, deleteDog, handleOpen} = useDogStore(); //we extract specific values from the object returned by the custom hook
     const navigate = useNavigate();
-    const [isOnline, setIsOnline] = useState<boolean>(true);
+    // const [isOnline, setIsOnline] = useState<boolean>(true);
 
-    const checkInternetStatus = async () => {
-        try {
-            const response = await axios.get(
-                'http://localhost:3001/api/check-internet',
-            );
-            setIsOnline(response.data.isOnline);
-            if (!response.data.isOnline) {
-                // Alert the user that the internet connection is down
-                alert('Internet connection is down!');
-            }
-        } catch (error) {
-            setIsOnline(false); // If there's an error, assume offline
-            alert('Internet connection is down!');
-        }
-    };
-    useEffect(() => {
-        checkInternetStatus();
-        const interval = setInterval(checkInternetStatus, 5000); // Check every 5 seconds
-        return () => clearInterval(interval);
-    });
-    console.log(isOnline);
+    // const checkInternetStatus = async () => {
+    //     try {
+    //         const response = await axios.get(
+    //             'http://localhost:3001/api/check-internet',
+    //         );
+    //         setIsOnline(response.data.isOnline);
+    //         if (!response.data.isOnline) {
+    //             // Alert the user that the internet connection is down
+    //             alert('Internet connection is down!');
+    //         }
+    //     } catch (error) {
+    //         setIsOnline(false); // If there's an error, assume offline
+    //         alert('Internet connection is down!');
+    //     }
+    // };
+    // useEffect(() => {
+    //     checkInternetStatus();
+    //     const interval = setInterval(checkInternetStatus, 5000); // Check every 5 seconds
+    //     return () => clearInterval(interval);
+    // });
+    // console.log(isOnline);
 
     const handleDelete = (dog: Dog) => {
         deleteDog(dog);
     };
-    const handleSeePossessions = (dog: Dog) => {
-        handlePossessions(dog);
-        navigate(`/possessions`);
-    };
+    // const handleSeePossessions = (dog: Dog) => {
+    //     handlePossessions(dog);
+    //     navigate(`/possessions`);
+    // };
 
     const [sortAscOrder, setSortAscOrder] = useState(false); // Initial sort order
     useEffect(() => {
@@ -71,8 +69,13 @@ const Overview = () => {
     return (
         <Grid container spacing={2}>
             <Grid item xs={12} display={'flex'}>
-                <Grid item xs={6}>
+                <Grid item xs={4}>
                     <Typography variant='h4'>Dog for adoption!</Typography>
+                </Grid>
+                <Grid item xs={2}>
+                    <Button onClick={() => navigate(`/possessions`)}>
+                        Possessions
+                    </Button>
                 </Grid>
                 <Grid item xs={2}>
                     <Button onClick={() => setSortAscOrder(!sortAscOrder)}>
@@ -94,10 +97,10 @@ const Overview = () => {
                 (
                     dog, //iterating through dogs array and setting each grid key to its id
                 ) => (
-                    <Grid key={dog.id} item xs={12} md={3}>
+                    <Grid key={dog.Did} item xs={12} md={3}>
                         <Card sx={{maxWidth: 345}}>
                             <CardActionArea
-                                onClick={() => navigate(`/dogs/${dog.id}`)}
+                                onClick={() => navigate(`/dogs/${dog.Did}`)}
                             >
                                 <CardMedia
                                     sx={{height: 140}}
@@ -132,12 +135,6 @@ const Overview = () => {
                                     onClick={() => handleOpen(dog)}
                                 >
                                     Edit
-                                </Button>
-                                <Button
-                                    size='small'
-                                    onClick={() => handleSeePossessions(dog)}
-                                >
-                                    Possessions
                                 </Button>
                             </CardActions>
                         </Card>

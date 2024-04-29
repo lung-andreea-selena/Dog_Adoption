@@ -12,7 +12,6 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Possession} from '../../model/Possession';
@@ -23,29 +22,29 @@ const Overview = () => {
     const {possessions, setPosessions, deletePossesion, handleOpen} =
         usePossessionStore(); //we extract specific values from the object returned by the custom hook
     const navigate = useNavigate();
-    const [isOnline, setIsOnline] = useState<boolean>(true);
+    // const [isOnline, setIsOnline] = useState<boolean>(true);
 
-    const checkInternetStatus = async () => {
-        try {
-            const response = await axios.get(
-                'http://localhost:3001/api/check-internet',
-            );
-            setIsOnline(response.data.isOnline);
-            if (!response.data.isOnline) {
-                // Alert the user that the internet connection is down
-                alert('Internet connection is down!');
-            }
-        } catch (error) {
-            setIsOnline(false); // If there's an error, assume offline
-            alert('Internet connection is down!');
-        }
-    };
-    useEffect(() => {
-        checkInternetStatus();
-        const interval = setInterval(checkInternetStatus, 5000); // Check every 5 seconds
-        return () => clearInterval(interval);
-    });
-    console.log(isOnline);
+    // const checkInternetStatus = async () => {
+    //     try {
+    //         const response = await axios.get(
+    //             'http://localhost:3001/api/check-internet',
+    //         );
+    //         setIsOnline(response.data.isOnline);
+    //         if (!response.data.isOnline) {
+    //             // Alert the user that the internet connection is down
+    //             alert('Internet connection is down!');
+    //         }
+    //     } catch (error) {
+    //         setIsOnline(false); // If there's an error, assume offline
+    //         alert('Internet connection is down!');
+    //     }
+    // };
+    // useEffect(() => {
+    //     checkInternetStatus();
+    //     const interval = setInterval(checkInternetStatus, 5000); // Check every 5 seconds
+    //     return () => clearInterval(interval);
+    // });
+    // console.log(isOnline);
 
     const handleDelete = (possession: Possession) => {
         deletePossesion(possession);
@@ -87,11 +86,11 @@ const Overview = () => {
                 (
                     possession, //iterating through dogs array and setting each grid key to its id
                 ) => (
-                    <Grid key={possession.id} item xs={12} md={3}>
+                    <Grid key={possession.Pid} item xs={12} md={3}>
                         <Card sx={{maxWidth: 345}}>
                             <CardActionArea
                                 onClick={() =>
-                                    navigate(`/possessions/${possession.id}`)
+                                    navigate(`/possessions/${possession.Pid}`)
                                 }
                             >
                                 <CardMedia

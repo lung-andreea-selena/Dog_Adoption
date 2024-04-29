@@ -34,7 +34,8 @@ const PossessionDialog = () => {
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         if (selectedPossession) {
             const updatedPosessions = {
-                id: selectedPossession.id,
+                Pid: selectedPossession.Pid,
+                dogId: data.dogId,
                 title: data.title,
                 type: data.type as PossessionType,
                 description: data.description,
@@ -46,7 +47,8 @@ const PossessionDialog = () => {
             editPossession(updatedPosessions);
         } else {
             addPossession({
-                id: Math.floor(Math.random() * 1000),
+                Pid: Math.floor(Math.random() * 1000),
+                dogId: data.dogId,
                 title: data.title,
                 type: data.type as PossessionType,
                 description: data.description,

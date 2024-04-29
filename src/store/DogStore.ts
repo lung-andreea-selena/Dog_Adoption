@@ -13,7 +13,7 @@ interface useDogStoreProps {
     selectedDog: Dog;
     editDog: (dog: Dog) => void; //function
     setDogs: (dogs: Dog[]) => void;
-    handlePossessions: (dog?: Dog) => void;
+    // handlePossessions: (dog?: Dog) => void;
 }
 axios.get<Dog[]>('http://localhost:3001/api/dogs').then((response) => {
     useDogStore.setState({dogs: response.data});
@@ -39,13 +39,13 @@ export const useDogStore = create<useDogStoreProps>((set) => ({
     handleClose: () => set({opened: false, selectedDog: {} as Dog}),
     editDog: async (dog: Dog) => {
         try {
-            await axios.put(`http://localhost:3001/dogs/${dog.id}`, dog);
+            await axios.put(`http://localhost:3001/dogs/${dog.Did}`, dog);
             fetchDogs();
         } catch (error) {
             console.error('Error editing dog', error);
         }
         set((state) => ({
-            dogs: state.dogs.map((d) => (d.id === dog.id ? dog : d)),
+            dogs: state.dogs.map((d) => (d.Did === dog.Did ? dog : d)),
         }));
         fetchDogs();
     },
@@ -62,15 +62,15 @@ export const useDogStore = create<useDogStoreProps>((set) => ({
     },
     deleteDog: async (dog: Dog) => {
         try {
-            await axios.delete(`http://localhost:3001/dogs/${dog.id}`);
+            await axios.delete(`http://localhost:3001/dogs/${dog.Did}`);
             fetchDogs();
         } catch (error) {
             console.error('Error deleteing dog', dog);
         }
         set((state) => ({
-            dogs: state.dogs.filter((d) => d.id !== dog.id),
+            dogs: state.dogs.filter((d) => d.Did !== dog.Did),
         }));
     },
     setDogs: (dogs: Dog[]) => set(() => ({dogs: [...dogs]})),
-    handlePossessions: (dog?: Dog) => set({selectedDog: dog}),
+    //handlePossessions: (dog?: Dog) => set({selectedDog: dog}),
 }));

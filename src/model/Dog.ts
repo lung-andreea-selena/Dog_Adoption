@@ -1,14 +1,11 @@
-import {Possession} from './Possession';
-
 export interface Dog {
-    id: number;
+    Did: number;
     name: string;
     breed: DogBreed;
     description: string;
     imageUrl: string;
     age: number;
     owner: string;
-    possessions: Possession[];
 }
 
 export enum DogBreed {
