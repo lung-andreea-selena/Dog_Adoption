@@ -1,0 +1,23 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin-left:450px;
+}
+
+.page-item {
+    margin: 0 5px; /* Adjust spacing between page numbers */
+}
+
+.page-link {
+    display: block;
+    padding: 5px 10px;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
+}
+
+.page-link:hover {
+    background-color: #f0f0f0;
+}

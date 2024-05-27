@@ -39,7 +39,7 @@ export const useDogStore = create<useDogStoreProps>((set) => ({
     handleClose: () => set({opened: false, selectedDog: {} as Dog}),
     editDog: async (dog: Dog) => {
         try {
-            await axios.put(`http://localhost:3001/dogs/${dog.Did}`, dog);
+            await axios.put(`http://localhost:3001/api/dogs/${dog.Did}`, dog);
             fetchDogs();
         } catch (error) {
             console.error('Error editing dog', error);
@@ -51,7 +51,7 @@ export const useDogStore = create<useDogStoreProps>((set) => ({
     },
     addDog: async (dog: Dog) => {
         try {
-            await axios.post(`http://localhost:3001/dogs`, dog);
+            await axios.post(`http://localhost:3001/api/dogs`, dog);
             fetchDogs();
         } catch (error) {
             console.error('Error adding dog', error);
@@ -61,11 +61,12 @@ export const useDogStore = create<useDogStoreProps>((set) => ({
         }));
     },
     deleteDog: async (dog: Dog) => {
+        console.log(dog.Did);
         try {
-            await axios.delete(`http://localhost:3001/dogs/${dog.Did}`);
+            await axios.delete(`http://localhost:3001/api/dogs/${dog.Did}`);
             fetchDogs();
         } catch (error) {
-            console.error('Error deleteing dog', dog);
+            console.error('Error deleteing dog', error);
         }
         set((state) => ({
             dogs: state.dogs.filter((d) => d.Did !== dog.Did),

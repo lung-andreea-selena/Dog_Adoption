@@ -1,28 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {Request, Response} from 'express';
-import http from 'http';
-import {dogs} from '../store/DogStore';
-import {Dog, DogBreed} from '../model/Dog';
+import {DogBreed, DogModel} from '../models/Dog';
+import {DogRepository} from '../repository/DogRepo';
+
+export const dogs = new DogRepository();
 
 export const getDogs = async (req: Request, res: Response) => {
-    res.json(dogs);
-    // try {
-    //     await connectDB();
-    //     const query = 'SELECT * FROM Dog';
-    //     const result = await sql.query(query);
-    //     res.json(result.recordset);
-    // } catch (error) {
-    //     console.error('Error fetching dogs:', error);
-    //     res.status(500).json({error: 'Internal Server Error'});
-    // } finally {
-    //     await closeDB();
-    // }
+    try {
+        const allDogs = await dogs.getDogs();
+        res.json(allDogs);
+    } catch (error) {
+        console.error('Error getting dogs:', error);
+        return res.status(400).json({message: 'Error getting dogs'});
+    }
 };
 
 export const getDogById = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const dog = dogs.find((dog) => dog.id === id);
+    const dog = await DogModel.findById({Did: id});
     if (dog) {
-        res.json(dog);
+        res.status(200).json(dog);
     } else {
         res.status(404).send('Dog not found');
     }
@@ -30,73 +27,63 @@ export const getDogById = async (req: Request, res: Response) => {
 
 export const addDog = async (req: Request, res: Response) => {
     try {
-        const {name, breed, description, imageUrl, age, owner, possessions} =
-            req.body;
-        if (!name || !breed || !description || !imageUrl || !age || !owner) {
-            return res.status(400).json({message: 'Invalid dog data'});
-        } else {
-            const newDog: Dog = {
-                id: dogs.length + 2,
-                name: name,
-                breed: breed as DogBreed,
-                description: description,
-                imageUrl: imageUrl,
-                age: age,
-                owner: owner,
-                possessions: possessions,
-            };
-            dogs.push(newDog);
-            return res.status(201).json(newDog);
-        }
-    } catch (error) {
-        console.error('Error adding dog: ', error);
-        return res.status(400).json({message: 'Error adding dog'});
-    }
-};
-
-export const updateDog = async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id);
-    const dogIndex = dogs.findIndex((dog) => dog.id === id);
-    if (dogIndex != -1) {
-        const {name, breed, description, imageUrl, age, owner, possessions} =
-            req.body;
-        dogs[dogIndex] = {
-            ...dogs[dogIndex],
+        const {name, breed, description, imageUrl, age, owner} = req.body;
+        const newDog = {
             name: name,
             breed: breed as DogBreed,
             description: description,
             imageUrl: imageUrl,
             age: age,
             owner: owner,
-            possessions: possessions,
         };
-    } else {
-        res.status(404).send('Dog not found');
+        dogs.addDog(newDog);
+        return res.status(201).json(newDog);
+    } catch (error) {
+        console.error('Error adding dog: ', error);
+        return res.status(400).json({message: 'Error adding dog'});
     }
 };
-export const deleteDog = async (req: Request, res: Response) => {
+export const updateDog = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const index = dogs.findIndex((dog) => dog.id === id);
-    if (index > -1) {
-        dogs.splice(index, 1);
-        res.send('Dog deleted successfully');
+    const dog = DogModel.findOne({Did: id});
+    const {name, breed, description, imageUrl, age, owner} = req.body;
+    if (
+        !name ||
+        !breed ||
+        !description ||
+        !imageUrl ||
+        !age ||
+        !owner ||
+        isNaN(age)
+    ) {
+        return res.status(400).json({message: 'Invalid dog data'});
     } else {
-        res.status(404).send('Dog not found');
+        if (await dog) {
+            const updatedDog = await DogModel.updateOne(
+                {Did: id},
+                {
+                    name: name,
+                    breed: breed as DogBreed,
+                    description: description,
+                    imageUrl: imageUrl,
+                    age: age,
+                    owner: owner,
+                },
+            );
+            res.status(200).json(updatedDog);
+        } else {
+            res.status(404).json({message: 'Dog not found'});
+        }
     }
 };
 
-export const checkInternet = async (req: Request, res: Response) => {
-    const options = {
-        hostname: 'www.google.com',
-        port: 80,
-        path: '/',
-        method: 'GET',
-    };
-    const reqHttp = http.request(options, () => {
-        res.json({isOnline: true});
-    });
-    reqHttp.on('error', () => {
-        res.json({idOnline: false});
-    });
-    reqHttp.end();
+export const deleteDog = async (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const dog = DogModel.findOne({Did: id});
+    if (dog) {
+        await dog.deleteOne();
+        res.send('Dog deleted successfully');
+    } else {
+        res.status(404).send('Dog not founddd');
+    }
 };

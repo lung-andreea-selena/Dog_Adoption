@@ -43,7 +43,7 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
     editPossession: async (possession: Possession) => {
         try {
             await axios.put(
-                `http://localhost:3001/possessions/${possession.Pid}`,
+                `http://localhost:3001/api/possessions/${possession.Pid}`,
                 possession,
             );
             fetchPossessions();
@@ -59,7 +59,10 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
     },
     addPossession: async (possession: Possession) => {
         try {
-            await axios.post(`http://localhost:3001/possessions`, possession);
+            await axios.post(
+                `http://localhost:3001/api/possessions`,
+                possession,
+            );
             fetchPossessions();
         } catch (error) {
             console.error('Error adding possession', error);
@@ -71,7 +74,7 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
     deletePossesion: async (possession: Possession) => {
         try {
             await axios.delete(
-                `http://localhost:3001/possessions/${possession.Pid}`,
+                `http://localhost:3001/api/possessions/${possession.Pid}`,
             );
             fetchPossessions();
         } catch (error) {
