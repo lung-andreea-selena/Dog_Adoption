@@ -15,7 +15,13 @@ interface usePossessionStoreProps {
     setPosessions: (possessions: Possession[]) => void;
 }
 axios
-    .get<Possession[]>('https://mpp-backend-dp15.onrender.com/api/possessions')
+    .get<Possession[]>('https://mpp-backend-dp15.onrender.com/api/possessions', 
+        {
+            headers: {
+                Authorization: localStorage.getItem('token'),
+            },
+        },
+    )
     .then((response) => {
         usePossessionStore.setState({possessions: response.data});
     });
@@ -23,6 +29,11 @@ const fetchPossessions = async () => {
     try {
         const response = await axios.get<Possession[]>(
             'https://mpp-backend-dp15.onrender.com/api/possessions',
+            {
+                headers: {
+                    Authorization: localStorage.getItem('token'),
+                },
+            },
         );
         console.log(response.data);
         usePossessionStore.setState({possessions: response.data});
@@ -45,6 +56,11 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
             await axios.put(
                 `https://mpp-backend-dp15.onrender.com/api/possessions/${possession.Pid}`,
                 possession,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                },
             );
             fetchPossessions();
         } catch (error) {
@@ -62,6 +78,11 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
             await axios.post(
                 `https://mpp-backend-dp15.onrender.com/api/possessions`,
                 possession,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                },
             );
             fetchPossessions();
         } catch (error) {
@@ -75,6 +96,11 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
         try {
             await axios.delete(
                 `https://mpp-backend-dp15.onrender.com/api/possessions/${possession.Pid}`,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                },
             );
             fetchPossessions();
         } catch (error) {

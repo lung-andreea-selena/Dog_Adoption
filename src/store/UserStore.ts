@@ -20,6 +20,11 @@ const fetchUsers = async () => {
     try {
         const response = await axios.get<User[]>(
             'https://mpp-backend-dp15.onrender.com/api/users',
+            {
+                headers: {
+                    Authorization: localStorage.getItem('token'),
+                },
+            },
         );
         console.log(response.data);
         useUserStore.setState({users: response.data});
@@ -45,6 +50,11 @@ export const useUserStore = create<useUserStoreProps>((set) => ({
             await axios.put(
                 `https://mpp-backend-dp15.onrender.com/api/users/${user.Uid}`,
                 user,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                },
             );
             fetchUsers();
         } catch (error) {
@@ -60,6 +70,11 @@ export const useUserStore = create<useUserStoreProps>((set) => ({
             await axios.post(
                 'https://mpp-backend-dp15.onrender.com/api/users',
                 user,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                },
             );
             fetchUsers();
         } catch (error) {
@@ -72,6 +87,9 @@ export const useUserStore = create<useUserStoreProps>((set) => ({
                 `https://mpp-backend-dp15.onrender.com/api/users/${Uid}`,
                 {
                     params: {id: Uid},
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
                 },
             );
             fetchUsers();
