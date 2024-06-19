@@ -53,6 +53,11 @@ export const useDogStore = create<useDogStoreProps>((set) => ({
             await axios.put(
                 `https://mpp-backend-dp15.onrender.com/api/dogs/${dog.Did}`,
                 dog,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                },
             );
             fetchDogs();
         } catch (error) {
@@ -68,6 +73,11 @@ export const useDogStore = create<useDogStoreProps>((set) => ({
             await axios.post(
                 `https://mpp-backend-dp15.onrender.com/api/dogs`,
                 dog,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                },
             );
             fetchDogs();
         } catch (error) {
@@ -82,6 +92,11 @@ export const useDogStore = create<useDogStoreProps>((set) => ({
         try {
             await axios.delete(
                 `https://mpp-backend-dp15.onrender.com/api/dogs/${dog.Did}`,
+                {
+                    headers: {
+                        Authorization: localStorage.getItem('token'),
+                    },
+                },
             );
             fetchDogs();
         } catch (error) {
