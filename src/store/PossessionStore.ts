@@ -15,14 +15,14 @@ interface usePossessionStoreProps {
     setPosessions: (possessions: Possession[]) => void;
 }
 axios
-    .get<Possession[]>('http://localhost:3001/api/possessions')
+    .get<Possession[]>('https://mpp-backend-dp15.onrender.com/api/possessions')
     .then((response) => {
         usePossessionStore.setState({possessions: response.data});
     });
 const fetchPossessions = async () => {
     try {
         const response = await axios.get<Possession[]>(
-            'http://localhost:3001/api/possessions',
+            'https://mpp-backend-dp15.onrender.com/api/possessions',
         );
         console.log(response.data);
         usePossessionStore.setState({possessions: response.data});
@@ -43,7 +43,7 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
     editPossession: async (possession: Possession) => {
         try {
             await axios.put(
-                `http://localhost:3001/api/possessions/${possession.Pid}`,
+                `https://mpp-backend-dp15.onrender.com/api/possessions/${possession.Pid}`,
                 possession,
             );
             fetchPossessions();
@@ -60,7 +60,7 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
     addPossession: async (possession: Possession) => {
         try {
             await axios.post(
-                `http://localhost:3001/api/possessions`,
+                `https://mpp-backend-dp15.onrender.com/api/possessions`,
                 possession,
             );
             fetchPossessions();
@@ -74,7 +74,7 @@ export const usePossessionStore = create<usePossessionStoreProps>((set) => ({
     deletePossesion: async (possession: Possession) => {
         try {
             await axios.delete(
-                `http://localhost:3001/api/possessions/${possession.Pid}`,
+                `https://mpp-backend-dp15.onrender.com/api/possessions/${possession.Pid}`,
             );
             fetchPossessions();
         } catch (error) {

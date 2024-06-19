@@ -115,7 +115,7 @@ const Overview = () => {
                     </Button>
                 </Grid>
                 <Grid item xs={2}>
-                    <Button onClick={() => navigate(`/user-info`)}>Info</Button>
+                    <Button onClick={() => navigate(`/users`)}>Users</Button>
                 </Grid>
                 <Grid item xs={2}>
                     <Button onClick={() => navigate(`/dogs/stats`)}>

@@ -7,7 +7,7 @@ import LayoutP from './components/Possession/LayoutPossession';
 import SignIn from './components/SignIn/signin';
 import SignUp from './components/Register/register';
 import AuthOutlet from '@auth-kit/react-router/AuthOutlet';
-import UserInfo from './components/User/UserInfo';
+import LayoutU from './components/User/LayoutUser';
 const AppRouter = () => {
     const OverviewDog = lazy(() => import('./components/Dog/OverviewDog'));
     const DetailDog = lazy(() => import('./components/Dog/DetailDog'));
@@ -18,6 +18,7 @@ const AppRouter = () => {
     const DetailPossession = lazy(
         () => import('./components/Possession/DetailPosession'),
     );
+    const OverviewUser = lazy(() => import('./components/User/OverviewUsers'));
     return (
         <BrowserRouter>
             <Suspense fallback={<></>}>
@@ -37,7 +38,6 @@ const AppRouter = () => {
                         />
                         <Route element={<DetailDog />} path={'/dogs/:id'} />
                         <Route element={<Chart />} path={'/dogs/stats'} />
-                        <Route element={<UserInfo />} path={'user-info'} />
                         <Route
                             element={
                                 <LayoutP>
@@ -49,6 +49,14 @@ const AppRouter = () => {
                         <Route
                             element={<DetailPossession />}
                             path={'/possessions/:id'}
+                        />
+                        <Route
+                            element={
+                                <LayoutU>
+                                    <OverviewUser />
+                                </LayoutU>
+                            }
+                            path={'/users'}
                         />
                     </Route>
                     <Route path='/login' element={<SignIn />} />

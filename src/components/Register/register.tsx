@@ -34,7 +34,7 @@ export default function SignUp() {
         const data = new FormData(event.currentTarget);
         try {
             const response = await axios.post(
-                'http://localhost:3001/api/register',
+                'https://mpp-backend-dp15.onrender.com/api/register',
                 {
                     name: data.get('name'),
                     age: data.get('age'),

@@ -19,7 +19,7 @@ interface useUserStoreProps {
 const fetchUsers = async () => {
     try {
         const response = await axios.get<User[]>(
-            'http://localhost:3001/api/users',
+            'https://mpp-backend-dp15.onrender.com/api/users',
         );
         console.log(response.data);
         useUserStore.setState({users: response.data});
@@ -43,7 +43,7 @@ export const useUserStore = create<useUserStoreProps>((set) => ({
     editUser: async (user: User) => {
         try {
             await axios.put(
-                `http://localhost:3001/api/users/${user.Uid}`,
+                `https://mpp-backend-dp15.onrender.com/api/users/${user.Uid}`,
                 user,
             );
             fetchUsers();
@@ -57,7 +57,10 @@ export const useUserStore = create<useUserStoreProps>((set) => ({
     },
     addUser: async (user: unknown) => {
         try {
-            await axios.post('http://localhost:3001/api/users', user);
+            await axios.post(
+                'https://mpp-backend-dp15.onrender.com/api/users',
+                user,
+            );
             fetchUsers();
         } catch (error) {
             console.error('Error adding user', error);
@@ -65,9 +68,12 @@ export const useUserStore = create<useUserStoreProps>((set) => ({
     },
     deleteUser: async (Uid: number) => {
         try {
-            await axios.delete(`http://localhost:3001/api/users/${Uid}`, {
-                params: {id: Uid},
-            });
+            await axios.delete(
+                `https://mpp-backend-dp15.onrender.com/api/users/${Uid}`,
+                {
+                    params: {id: Uid},
+                },
+            );
             fetchUsers();
         } catch (error) {
             console.error('Error deleting user', error);

@@ -36,7 +36,7 @@ export default function SignIn() {
         const data = new FormData(event.currentTarget);
         try {
             const response = await axios.put(
-                'http://localhost:3001/api/login',
+                'https://mpp-backend-dp15.onrender.com/api/login',
                 {
                     email: data.get('email'),
                     password: data.get('password'),
@@ -44,11 +44,12 @@ export default function SignIn() {
             );
             const token = response.data.token;
             console.log(token);
+            localStorage.setItem('token', token); // Store token in localStorage
             if (
                 singIn({
                     auth: {
                         token: token,
-                        type: 'Bearer', //Bearer tokens are a general class of token that grants access to the party in possession of the token.
+                        type: 'Bearer',
                     },
                     userState: {
                         email: response.data.email,
@@ -56,7 +57,6 @@ export default function SignIn() {
                     },
                 })
             ) {
-                //if the sign-in is successful
                 const user = {
                     Uid: response.data.user.uid,
                     age: response.data.user.age,
@@ -74,13 +74,13 @@ export default function SignIn() {
             }
         } catch (error) {
             if (axios.isAxiosError(error)) {
-                console.error('Error:', error.response?.data?.message); // Log the error message from the response
+                console.error('Error:', error.response?.data?.message);
                 setErrorMsg(
-                    error.response?.data?.message || 'An error occurred', // Set the error message state
+                    error.response?.data?.message || 'An error occurred',
                 );
             } else {
-                console.error('Error:', error); // Log generic errors
-                setErrorMsg('An error occurred'); // Set a generic error message state
+                console.error('Error:', error);
+                setErrorMsg('An error occurred');
             }
         }
     };
